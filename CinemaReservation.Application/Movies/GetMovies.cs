@@ -1,1 +1,0 @@
-namespace CinemaReservation.Application.Movies;
