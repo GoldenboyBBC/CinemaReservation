@@ -1,11 +1,14 @@
 using CinemaReservation.Infrastructure.Data;
 using CinemaReservation.Application.Interfaces;
 using CinemaReservation.Infrastructure.Repositories;
+using CinemaReservation.Application.Movies;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddOpenApi();
+
+builder.Services.AddControllers();
 
 builder.Services.AddDbContext<CinemaDbContext> (
     options => options.UseNpgsql (
@@ -14,6 +17,7 @@ builder.Services.AddDbContext<CinemaDbContext> (
 );
 
 builder.Services.AddScoped<IMovieRepository, MovieRepository>();
+builder.Services.AddScoped<GetMovies>();
 
 var app = builder.Build();
 if (app.Environment.IsDevelopment())
@@ -22,5 +26,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.MapControllers();
 
 app.Run();
