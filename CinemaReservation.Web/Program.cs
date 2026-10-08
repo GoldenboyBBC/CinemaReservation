@@ -21,9 +21,15 @@ builder.Services.AddScoped<GetMovies>();
 builder.Services.AddScoped<CreateMovie>();
 
 var app = builder.Build();
+
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
+
+    app.UseSwaggerUI(options =>
+    {
+        options.SwaggerEndpoint("/openapi/v1.json", "CinemaReservation API v1");
+    });
 }
 
 app.UseHttpsRedirection();
