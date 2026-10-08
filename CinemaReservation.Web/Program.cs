@@ -22,14 +22,22 @@ builder.Services.AddDbContext<CinemaDbContext> (
     )
 );
 
+// Movie
 builder.Services.AddScoped<IMovieRepository, MovieRepository>();
 builder.Services.AddScoped<GetMovies>();
 builder.Services.AddScoped<CreateMovie>();
+builder.Services.AddScoped<GetMovieById>();
 
 var app = builder.Build();
+
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
+
+    app.UseSwaggerUI(options =>
+    {
+        options.SwaggerEndpoint("/openapi/v1.json", "CinemaReservation API v1");
+    });
 }
 
 app.UseHttpsRedirection();
