@@ -25,4 +25,10 @@ public class MovieRepository : IMovieRepository
 
         await _context.SaveChangesAsync();
     }
+
+    public async Task<Movie?> GetMovieByIdAsync(Guid id)
+    {
+        return await _context.Movies
+            .FirstOrDefaultAsync(movie => movie.Id == id);
+    }
 }
