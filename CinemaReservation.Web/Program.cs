@@ -1,7 +1,10 @@
-using CinemaReservation.Infrastructure.Data;
 using CinemaReservation.Application.Interfaces;
-using CinemaReservation.Infrastructure.Repositories;
 using CinemaReservation.Application.Movies;
+using CinemaReservation.Application.Validators;
+using CinemaReservation.Infrastructure.Data;
+using CinemaReservation.Infrastructure.Repositories;
+using FluentValidation;
+using FluentValidation.AspNetCore;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -9,6 +12,9 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddOpenApi();
 
 builder.Services.AddControllers();
+
+builder.Services.AddFluentValidationAutoValidation();
+builder.Services.AddValidatorsFromAssemblyContaining<CreateMovieValidator>();
 
 builder.Services.AddDbContext<CinemaDbContext> (
     options => options.UseNpgsql (
