@@ -8,5 +8,5 @@ public interface IMovieRepository
 
     Task AddMovieAsync(Movie movie);
 
-    Task GetMovieByIdAsync(Guid id);
+    Task<Movie?> GetMovieByIdAsync(Guid id);
 }
