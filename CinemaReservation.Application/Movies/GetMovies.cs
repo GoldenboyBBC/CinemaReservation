@@ -1,5 +1,5 @@
 using CinemaReservation.Application.Interfaces;
-using CinemaReservation.Domain.Entities;
+using CinemaReservation.Application.DTOs;
 
 namespace CinemaReservation.Application.Movies;
 
@@ -12,8 +12,27 @@ public class GetMovies
         _movieRepository = movieRepository;
     }
 
-    public async Task<IReadOnlyList<Movie>> ExecuteAsync()
+    public async Task<IReadOnlyList<MovieDto>> ExecuteAsync()
     {
-        return await _movieRepository.GetMoviesAsync();
+        var movies = await _movieRepository.GetMoviesAsync();
+
+        var movieList = new List<MovieDto>();
+
+        foreach (var movie in movies)
+        {
+            movieList.Add (
+                    new MovieDto()
+                    {
+                        Id = movie.Id,
+                        Name = movie.Name,
+                        Description = movie.Description,
+                        Duration = movie.Duration,
+                        Creator = movie.Creator,
+                        ReleaseDate = movie.ReleaseDate,
+                    }
+                );
+        }
+
+        return movieList;
     }
 }

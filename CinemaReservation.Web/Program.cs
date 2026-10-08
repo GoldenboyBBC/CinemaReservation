@@ -18,6 +18,7 @@ builder.Services.AddDbContext<CinemaDbContext> (
 
 builder.Services.AddScoped<IMovieRepository, MovieRepository>();
 builder.Services.AddScoped<GetMovies>();
+builder.Services.AddScoped<CreateMovie>();
 
 var app = builder.Build();
 if (app.Environment.IsDevelopment())
