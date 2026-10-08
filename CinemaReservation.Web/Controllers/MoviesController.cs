@@ -10,11 +10,13 @@ public class MoviesController : ControllerBase
 {
     private readonly GetMovies _getMovies;
     private readonly CreateMovie _createMovie;
+    private readonly GetMovieById _getMovieById;
 
-    public MoviesController(GetMovies getMovies, CreateMovie createMovie)
+    public MoviesController(GetMovies getMovies, CreateMovie createMovie, GetMovieById getMovieById)
     {
         _getMovies = getMovies;
         _createMovie = createMovie;
+        _getMovieById = getMovieById;
     }
 
     [HttpGet]
@@ -25,20 +27,26 @@ public class MoviesController : ControllerBase
         return Ok(movieList);
     }
 
-    [HttpGet("{Id}")]
-    public async Task<IActionResult> GetMovie(int Id)
+    [HttpGet("{id}")]
+    public async Task<IActionResult> GetMovieById(Guid id)
     {
+        var movie = await _getMovieById.ExecuteAsync(id);
 
-        return Ok();
+        if (movie is null)
+        {
+            return NotFound();
+        }
+
+        return Ok(movie);
     }
 
     [HttpPost]
     public async Task<IActionResult> CreateMovie(CreateMovieDto createMovieDto)
     {
-        await _createMovie.ExecuteAsync(createMovieDto);
+        var movie = await _createMovie.ExecuteAsync(createMovieDto);
 
-        var actionName = typeof (CreateMovie).Name;
+        var actionName = nameof(GetMovieById);
 
-        return CreatedAtAction(actionName, createMovieDto);
+        return CreatedAtAction(actionName, new { id = movie.Id }, movie);
     }
 }

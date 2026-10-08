@@ -13,7 +13,7 @@ public class CreateMovie
         _movieRepository = movieRepository;
     }
 
-    public async Task ExecuteAsync(CreateMovieDto createMovieDto)
+    public async Task<MovieDto> ExecuteAsync(CreateMovieDto createMovieDto)
     {
         var movie = new Movie()
         {
@@ -26,5 +26,15 @@ public class CreateMovie
         };
 
         await _movieRepository.AddMovieAsync(movie);
+
+        return new MovieDto()
+        {
+            Id = movie.Id,
+            Name = movie.Name,
+            Description = movie.Description,
+            Duration = movie.Duration,
+            Creator = movie.Creator,
+            ReleaseDate = movie.ReleaseDate,
+        };
     }
 }

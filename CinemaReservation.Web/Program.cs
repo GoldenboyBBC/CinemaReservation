@@ -16,9 +16,11 @@ builder.Services.AddDbContext<CinemaDbContext> (
     )
 );
 
+// Movie
 builder.Services.AddScoped<IMovieRepository, MovieRepository>();
 builder.Services.AddScoped<GetMovies>();
 builder.Services.AddScoped<CreateMovie>();
+builder.Services.AddScoped<GetMovieById>();
 
 var app = builder.Build();
 
