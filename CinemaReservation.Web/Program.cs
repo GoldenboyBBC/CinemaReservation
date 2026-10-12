@@ -30,6 +30,7 @@ builder.Services.AddScoped<IMovieRepository, MovieRepository>();
 builder.Services.AddScoped<GetMovies>();
 builder.Services.AddScoped<CreateMovie>();
 builder.Services.AddScoped<GetMovieById>();
+builder.Services.AddScoped<DeleteMovieById>();
 
 var app = builder.Build();
 

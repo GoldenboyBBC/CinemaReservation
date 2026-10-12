@@ -11,12 +11,14 @@ public class MoviesController : ControllerBase
     private readonly GetMovies _getMovies;
     private readonly CreateMovie _createMovie;
     private readonly GetMovieById _getMovieById;
+    private readonly DeleteMovieById _deleteMovieById;
 
-    public MoviesController(GetMovies getMovies, CreateMovie createMovie, GetMovieById getMovieById)
+    public MoviesController(GetMovies getMovies, CreateMovie createMovie, GetMovieById getMovieById, DeleteMovieById deleteMovieById)
     {
         _getMovies = getMovies;
         _createMovie = createMovie;
         _getMovieById = getMovieById;
+        _deleteMovieById = deleteMovieById;
     }
 
     [HttpGet]
@@ -48,5 +50,18 @@ public class MoviesController : ControllerBase
         var actionName = nameof(GetMovieById);
 
         return CreatedAtAction(actionName, new { id = movie.Id }, movie);
+    }
+
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> DeleteMovie(Guid id)
+    {
+        bool deleted = await _deleteMovieById.ExecuteAsync(id);
+
+        if (!deleted)
+        {
+            return NotFound();
+        }
+
+        return NoContent();
     }
 }

@@ -9,4 +9,6 @@ public interface IMovieRepository
     Task AddMovieAsync(Movie movie);
 
     Task<Movie?> GetMovieByIdAsync(Guid id);
+
+    Task<bool> DeleteMovieById(Guid id);
 }

@@ -31,4 +31,20 @@ public class MovieRepository : IMovieRepository
         return await _context.Movies
             .FirstOrDefaultAsync(movie => movie.Id == id);
     }
+
+    public async Task<bool> DeleteMovieById(Guid id)
+    {
+        var movie = await _context.Movies.FindAsync(id);
+
+        if (movie is null)
+        {
+            return false;
+        }
+
+        _context.Movies.Remove(movie);
+
+        await _context.SaveChangesAsync();
+
+        return true;
+    }
 }
