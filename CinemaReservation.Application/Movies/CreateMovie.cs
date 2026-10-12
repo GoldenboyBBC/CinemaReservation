@@ -1,40 +1,28 @@
 ﻿using CinemaReservation.Application.Interfaces;
 using CinemaReservation.Application.DTOs;
 using CinemaReservation.Domain.Entities;
+using AutoMapper;
 
 namespace CinemaReservation.Application.Movies;
 
 public class CreateMovie
 {
     private readonly IMovieRepository _movieRepository;
+    private readonly IMapper _mapper;
 
-    public CreateMovie(IMovieRepository movieRepository)
+    public CreateMovie(IMovieRepository movieRepository, IMapper mapper)
     {
         _movieRepository = movieRepository;
+        _mapper = mapper;
     }
 
     public async Task<MovieDto> ExecuteAsync(CreateMovieDto createMovieDto)
     {
-        var movie = new Movie()
-        {
-            Id = Guid.NewGuid(),
-            Name = createMovieDto.Name,
-            Description = createMovieDto.Description,
-            Duration = createMovieDto.Duration,
-            Creator = createMovieDto.Creator,
-            ReleaseDate = createMovieDto.ReleaseDate,
-        };
+        var movie = _mapper.Map<Movie>(createMovieDto);
+        movie.Id = Guid.NewGuid();
 
         await _movieRepository.AddMovieAsync(movie);
 
-        return new MovieDto()
-        {
-            Id = movie.Id,
-            Name = movie.Name,
-            Description = movie.Description,
-            Duration = movie.Duration,
-            Creator = movie.Creator,
-            ReleaseDate = movie.ReleaseDate,
-        };
+        return _mapper.Map<MovieDto>(movie);
     }
 }

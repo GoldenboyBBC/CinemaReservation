@@ -1,15 +1,18 @@
 using CinemaReservation.Application.Interfaces;
 using CinemaReservation.Application.DTOs;
+using AutoMapper;
 
 namespace CinemaReservation.Application.Movies;
 
 public class GetMovies
 {
     private readonly IMovieRepository _movieRepository;
+    private readonly IMapper _mapper;
 
-    public GetMovies(IMovieRepository movieRepository)
+    public GetMovies(IMovieRepository movieRepository, IMapper mapper)
     {
         _movieRepository = movieRepository;
+        _mapper = mapper;
     }
 
     public async Task<IReadOnlyList<MovieDto>> ExecuteAsync()
@@ -20,17 +23,7 @@ public class GetMovies
 
         foreach (var movie in movies)
         {
-            movieList.Add (
-                    new MovieDto()
-                    {
-                        Id = movie.Id,
-                        Name = movie.Name,
-                        Description = movie.Description,
-                        Duration = movie.Duration,
-                        Creator = movie.Creator,
-                        ReleaseDate = movie.ReleaseDate,
-                    }
-                );
+            movieList.Add(_mapper.Map<MovieDto>(movie));
         }
 
         return movieList;

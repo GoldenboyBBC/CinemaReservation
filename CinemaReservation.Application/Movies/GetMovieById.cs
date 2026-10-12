@@ -1,15 +1,18 @@
 ﻿using CinemaReservation.Application.DTOs;
 using CinemaReservation.Application.Interfaces;
+using AutoMapper;
 
 namespace CinemaReservation.Application.Movies;
 
 public class GetMovieById
 {
     private readonly IMovieRepository _movieRepository;
+    private readonly IMapper _mapper;
 
-    public GetMovieById(IMovieRepository movieRepository)
+    public GetMovieById(IMovieRepository movieRepository, IMapper mapper)
     {
         _movieRepository = movieRepository;
+        _mapper = mapper;
     }
 
     public async Task<MovieDto?> ExecuteAsync(Guid id)
@@ -21,16 +24,6 @@ public class GetMovieById
             return null;
         }
 
-        var movieDto = new MovieDto()
-        {
-            Id = movie.Id,
-            Name = movie.Name,
-            Description = movie.Description,
-            Duration = movie.Duration,
-            Creator = movie.Creator,
-            ReleaseDate = movie.ReleaseDate,
-        };
-
-        return movieDto;
+        return _mapper.Map<MovieDto>(movie);
     }
 }

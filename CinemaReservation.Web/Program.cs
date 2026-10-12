@@ -6,12 +6,15 @@ using CinemaReservation.Infrastructure.Repositories;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using Microsoft.EntityFrameworkCore;
+using CinemaReservation.Application.Mapping;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddOpenApi();
 
 builder.Services.AddControllers();
+
+builder.Services.AddAutoMapper(cfg => { }, typeof(MovieMappingProfile).Assembly);
 
 builder.Services.AddFluentValidationAutoValidation();
 builder.Services.AddValidatorsFromAssemblyContaining<CreateMovieValidator>();
